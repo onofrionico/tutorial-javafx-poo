@@ -259,6 +259,12 @@ Pasos de la demo:
 4. En el panel de la derecha (Inspector), configurar texto y propiedades igual que en el código del Bloque 1 (`"Usuario:"`, `promptText`, `"Iniciar"`).
 5. Guardar el archivo dentro de `src/main/resources/` (por ejemplo como `login.fxml`) — esa es la carpeta que Maven copia al classpath, así después se puede cargar con `getClass().getResource("/login.fxml")`.
 
+> **Ejemplo de referencia ya armado:** por si la demo en vivo falla, o para que los alumnos lo consulten después de la clase, el repo [`ejemplo-chat-mvc-fx`](https://github.com/onofrionico/ejemplo-chat-mvc-fx) ya tiene un `login.fxml` + `LoginController` funcionando en `src/main/java/ar/edu/unlu/chatmvc/scenebuilderdemo/`. Se corre con:
+> ```bash
+> mvn javafx:run -Djavafx.mainClass=ar.edu.unlu.chatmvc.scenebuilderdemo.DemoSceneBuilder
+> ```
+> Es independiente del chat MVC — no lo modifica ni depende de él.
+
 ### 3.4 — El FXML generado
 
 Scene Builder guarda el diseño como XML declarativo. Comparar con el código imperativo del Bloque 1: mismo resultado, dos formas de expresarlo.
