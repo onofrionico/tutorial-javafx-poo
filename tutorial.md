@@ -229,3 +229,87 @@ mvn javafx:run
 ```
 
 Se abren **dos ventanas de login** — dos "clientes" que comparten el mismo modelo `Chat`, simulando dos usuarios chateando desde la misma máquina. Iniciar sesión con un nombre distinto en cada una y mandar mensajes cruzados para mostrar que se sincronizan.
+
+---
+
+## Bloque 3 — Scene Builder
+
+Todo lo que armamos a mano en el Bloque 1 se puede construir también arrastrando y soltando componentes con **Scene Builder**. Vale la pena mostrarlo recién ahora: entender el código primero ayuda a leer lo que Scene Builder genera automáticamente.
+
+### 3.1 — Licencia
+
+Scene Builder es **gratuito y open source** (licencia BSD), mantenido por [Gluon](https://gluonhq.com/products/scene-builder/). No tiene costo para los alumnos, ni para uso comercial.
+
+### 3.2 — Instalación
+
+1. Descargar el instalador desde [gluonhq.com/products/scene-builder](https://gluonhq.com/products/scene-builder/) (Windows/macOS/Linux).
+2. En IntelliJ IDEA: `File → Settings → Languages & Frameworks → JavaFX` y apuntar el campo "Path to Scene Builder" al ejecutable instalado. Esto permite hacer doble click en un `.fxml` y que abra directo en Scene Builder.
+
+### 3.3 — Demo en vivo: recrear la ventana de login
+
+Objetivo: recrear visualmente la misma ventana `VentanaInicioSesion` que se armó a mano en el Bloque 1 (Label + TextField + Button en un GridPane), pero esta vez arrastrando componentes desde la paleta de Scene Builder al canvas.
+
+Pasos de la demo:
+
+1. Scene Builder → nuevo documento → elegir `GridPane` como contenedor raíz.
+2. Arrastrar un `Label`, un `TextField` y un `Button` a la grilla.
+3. En el panel de la derecha (Inspector), configurar texto y propiedades igual que en el código del Bloque 1 (`"Usuario:"`, `promptText`, `"Iniciar"`).
+4. Guardar como `login.fxml`.
+
+### 3.4 — El FXML generado
+
+Scene Builder guarda el diseño como XML declarativo. Comparar con el código imperativo del Bloque 1: mismo resultado, dos formas de expresarlo.
+
+```xml
+<GridPane hgap="8.0" vgap="8.0" xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml" fx:controller="ar.edu.unlu.chatmvc.LoginController">
+    <Label text="Usuario:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+    <TextField fx:id="textUsuario" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+    <Button fx:id="btnIniciar" text="Iniciar" onAction="#onIniciar"
+            GridPane.columnIndex="1" GridPane.rowIndex="1" />
+</GridPane>
+```
+
+Puntos a resaltar:
+
+- `fx:controller` — la clase Java que va a manejar los eventos de este FXML.
+- `fx:id` — el nombre de campo que va a recibir la inyección automática en el controller.
+- `onAction="#onIniciar"` — conecta el botón directamente a un método del controller, sin escribir el `setOnAction(...)` a mano.
+
+### 3.5 — El patrón `@FXML` Controller
+
+```java
+public class LoginController {
+
+    @FXML
+    private TextField textUsuario;
+
+    @FXML
+    private Button btnIniciar;
+
+    @FXML
+    private void onIniciar(ActionEvent event) {
+        String nombre = textUsuario.getText();
+        // lógica al iniciar sesión
+    }
+}
+```
+
+JavaFX inyecta automáticamente los campos anotados con `@FXML` que coincidan con un `fx:id` del FXML, y conecta los métodos `@FXML` referenciados por `onAction`. No hace falta buscar los nodos a mano ni registrar los listeners con código.
+
+### 3.6 — Cargar el FXML
+
+```java
+@Override
+public void start(Stage primaryStage) throws IOException {
+    Parent root = FXMLLoader.load(getClass().getResource("/login.fxml"));
+    primaryStage.setScene(new Scene(root));
+    primaryStage.show();
+}
+```
+
+`FXMLLoader` lee el archivo, instancia el `fx:controller`, inyecta los campos `@FXML` y arma el `Node` raíz — todo en una línea.
+
+### 3.7 — Por qué esto importa para el proyecto del juego
+
+El patrón FXML + Controller es el que se va a usar para las pantallas del proyecto de juego más adelante: diseño visual rápido en Scene Builder, lógica separada en una clase Controller. Lo que se vio en este bloque — instalación, arrastrar componentes, `fx:id`, `@FXML`, `FXMLLoader` — es exactamente lo que van a reutilizar ahí.
