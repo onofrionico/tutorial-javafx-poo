@@ -251,10 +251,13 @@ Objetivo: recrear visualmente la misma ventana `VentanaInicioSesion` que se arm�
 
 Pasos de la demo:
 
-1. Scene Builder → nuevo documento → elegir `GridPane` como contenedor raíz.
-2. Arrastrar un `Label`, un `TextField` y un `Button` a la grilla.
-3. En el panel de la derecha (Inspector), configurar texto y propiedades igual que en el código del Bloque 1 (`"Usuario:"`, `promptText`, `"Iniciar"`).
-4. Guardar como `login.fxml`.
+1. Abrir Scene Builder. Dos formas de hacerlo:
+   - **Standalone:** ejecutar directo el `.exe`/`.app` instalado en el paso anterior (en Windows, por defecto queda en `%LOCALAPPDATA%\SceneBuilder\SceneBuilder.exe`, dentro de una carpeta oculta — hay que pegar la ruta a mano si el explorador no la muestra).
+   - **Desde IntelliJ** (una vez configurado el "Path to Scene Builder" en el paso anterior): clic derecho sobre la carpeta `src/main/resources` → `New → Scene Builder File`, o doble click sobre un `.fxml` ya existente — IntelliJ lo abre directo en Scene Builder sin salir del IDE. Esta es la forma recomendada para la demo en clase.
+2. Scene Builder → nuevo documento → elegir `GridPane` como contenedor raíz.
+3. Arrastrar un `Label`, un `TextField` y un `Button` a la grilla.
+4. En el panel de la derecha (Inspector), configurar texto y propiedades igual que en el código del Bloque 1 (`"Usuario:"`, `promptText`, `"Iniciar"`).
+5. Guardar el archivo dentro de `src/main/resources/` (por ejemplo como `login.fxml`) — esa es la carpeta que Maven copia al classpath, así después se puede cargar con `getClass().getResource("/login.fxml")`.
 
 ### 3.4 — El FXML generado
 
